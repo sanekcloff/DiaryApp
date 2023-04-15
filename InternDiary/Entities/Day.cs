@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,5 +23,22 @@ namespace InternDiary.Entities
         public bool? IsAttend { get; set; }
 
         public ICollection<DiaryDay> DiaryDays { get; set; }
+
+        [NotMapped]
+        public string Attend
+        {
+            get
+            {
+                string result = "Не отмечено";
+                if (IsAttend != null)
+                {
+                    if ((bool)IsAttend)
+                        result = "Присутсвовал";
+                    else
+                        result = "Отсутсвовал";
+                }
+                return result;
+            }
+        }
     }
 }

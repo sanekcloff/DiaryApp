@@ -97,12 +97,22 @@
                                                                                         <Setter Property="Template">
                                                                                             <Setter.Value>
                                                                                                 <ControlTemplate TargetType="ListViewItem">
-                                                                                                    <StackPanel>
-                                                                                                        <TextBlock Text="{Binding Day.Date}"/>
-                                                                                                        <TextBlock Text="{Binding Day.Content}"/>
-                                                                                                        <TextBlock Text="{Binding Day.Result}"/>
-                                                                                                        <TextBlock Text="{Binding Day.IsAttend}"/>
-                                                                                                    </StackPanel>
+                                                                                                    <Border BorderThickness="1"
+                                                                                                            BorderBrush="Orange"
+                                                                                                            x:Name="Border1"
+                                                                                                            Margin="5">
+                                                                                                        <StackPanel>
+                                                                                                            <TextBlock Text="{Binding Day.Date,StringFormat={}{0:d}}"/>
+                                                                                                            <TextBlock Text="{Binding Day.Content}"/>
+                                                                                                            <TextBlock Text="{Binding Day.Result}"/>
+                                                                                                            <TextBlock Text="{Binding Day.Attend}"/>
+                                                                                                        </StackPanel>
+                                                                                                    </Border>
+                                                                                                    <ControlTemplate.Triggers>
+                                                                                                        <Trigger Property="IsSelected" Value="True">
+                                                                                                            <Setter TargetName="Border1" Property="BorderBrush" Value="Red"/>
+                                                                                                        </Trigger>
+                                                                                                    </ControlTemplate.Triggers>
                                                                                                 </ControlTemplate>
                                                                                             </Setter.Value>
                                                                                         </Setter>

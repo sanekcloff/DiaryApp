@@ -28,6 +28,7 @@ namespace InternDiary.Service
                 .Include(p => p.PracticeDiaries)
                     .ThenInclude(pd => pd.Diary)
                         .ThenInclude(d => d.DiaryDays)
+                            .ThenInclude(dd=>dd.Day)
                 .Include(p=>p.Organization)
                 .ToList();
         }
@@ -38,6 +39,10 @@ namespace InternDiary.Service
                     .ThenInclude(pd => pd.Diary)
                         .ThenInclude(d => d.User)
                             .ThenInclude(u => u.Role)
+                .Include(p => p.PracticeDiaries)
+                    .ThenInclude(pd => pd.Diary)
+                        .ThenInclude(d => d.DiaryDays)
+                            .ThenInclude(dd => dd.Day)
                 .Include(p => p.Organization)
                 .SingleOrDefault(p=>p.Id==Id);
         }

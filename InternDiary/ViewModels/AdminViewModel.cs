@@ -20,12 +20,17 @@ namespace InternDiary.ViewModels
             UpdateLists();
         }
 
+        // для удобства пользоваться регионами чтобы можно было скрывать ненужные куски кода
+
+        // Готовый пример того как должны выглядеть преколы для списков
         #region Organization
 
+        // для работы с сущностью и таблицами, экземпляр создаётся в конструкторе выше. В сами сервисы не лезнть, я там всё вроде настроил, только пользоваться их методами.
         #region services
         public OrganizationService OrganizationService { get; set; }
         #endregion
 
+        // список который выводится, данные загружаются через сервис в методе UpdateLists(), 
         #region Lists
         private List<Organization> _organizations;
         public List<Organization> Organizations 
@@ -35,6 +40,7 @@ namespace InternDiary.ViewModels
         }
         #endregion
 
+        // поля для добавления и редактирования и удаления
         #region fields & properties
         private string _organizationTitle;
         private Organization _selectedOrganization;
@@ -51,10 +57,12 @@ namespace InternDiary.ViewModels
         }
         #endregion
 
+        // Пример добавления, редактирования и удаления
         #region Methods
         public void AddOrganization()
         {
-            if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle))
+            // проверка на то существует ли организаия с таким названием уже в базе
+            if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle)) // Any вернёт значение true если найдёт хотябы 1 тако элемент, в начале стоит ! это отрицание.
                 OrganizationService.Insert(new Organization { Title=OrganizationTitle });
             else
                 MessageBox.Show("Такая организация уже существует!");
@@ -62,8 +70,10 @@ namespace InternDiary.ViewModels
         }
         public void UpdateOrganization()
         {
+            // проверка на пустую строку
             if (OrganizationTitle!=null || OrganizationTitle!=string.Empty)
             {
+                // опять поиск на одинаковое название как выше
                 if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle))
                 {
                     SelectedOrganization.Title = OrganizationTitle;
@@ -78,6 +88,7 @@ namespace InternDiary.ViewModels
         }
         public void DeleteOrganization()
         {
+            // если после диалогового окна нажать кнопку нет, то удаления не будет, если да то удалится, var result хранит то что ты выберешь
             var result = MessageBox.Show($"Уверены что хотите удалить {SelectedOrganization.Title}?", "ВНИМАНИЕ", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
                 OrganizationService.Delete(SelectedOrganization);
@@ -86,7 +97,7 @@ namespace InternDiary.ViewModels
         #endregion
 
         #endregion
-
+        // сюда не лезть
         #region Practice
 
         #region services
@@ -104,6 +115,7 @@ namespace InternDiary.ViewModels
 
         #endregion
 
+        // вызывать после того как происходят какие либо изменения в таблицах
         public void UpdateLists()
         {
             Organizations = new List<Organization>(OrganizationService.GetOrganizations());
