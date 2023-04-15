@@ -65,7 +65,75 @@
 
             </TabItem>
             <TabItem Header="Практики">
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.6*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView Grid.Column="0"
+                              HorizontalContentAlignment="Stretch"
+                              ItemsSource="{Binding Practices}">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="{Binding Organization.Title}"
+                                                           x:Name="TextBlock1"/>
+                                                <TextBlock Text="{Binding Dates}"/>
+                                                <ListView ItemsSource="{Binding PracticeDiaries}">
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="ListViewItem">
+                                                                        <StackPanel>
+                                                                            <TextBlock Text="{Binding Diary.DiaryInfo}"
+                                                                                   x:Name="TextBlock1"/>
+                                                                            <ListView ItemsSource="{Binding Diary.DiaryDays}">
+                                                                                <ListView.ItemContainerStyle>
+                                                                                    <Style TargetType="ListViewItem">
+                                                                                        <Setter Property="Template">
+                                                                                            <Setter.Value>
+                                                                                                <ControlTemplate TargetType="ListViewItem">
+                                                                                                    <StackPanel>
+                                                                                                        <TextBlock Text="{Binding Day.Date}"/>
+                                                                                                        <TextBlock Text="{Binding Day.Content}"/>
+                                                                                                        <TextBlock Text="{Binding Day.Result}"/>
+                                                                                                        <TextBlock Text="{Binding Day.IsAttend}"/>
+                                                                                                    </StackPanel>
+                                                                                                </ControlTemplate>
+                                                                                            </Setter.Value>
+                                                                                        </Setter>
+                                                                                    </Style>
+                                                                                </ListView.ItemContainerStyle>
+                                                                            </ListView>
+                                                                        </StackPanel>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsSelected" Value="True">
+                                                                                <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

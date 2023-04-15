@@ -211,7 +211,7 @@ namespace InternDiary.Migrations
                         .IsRequired();
 
                     b.HasOne("InternDiary.Entities.Diary", "Diary")
-                        .WithMany()
+                        .WithMany("DiaryDays")
                         .HasForeignKey("DiaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -269,6 +269,8 @@ namespace InternDiary.Migrations
 
             modelBuilder.Entity("InternDiary.Entities.Diary", b =>
                 {
+                    b.Navigation("DiaryDays");
+
                     b.Navigation("PracticeDiaries");
                 });
 

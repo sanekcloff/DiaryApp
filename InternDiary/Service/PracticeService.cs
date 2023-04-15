@@ -21,7 +21,13 @@ namespace InternDiary.Service
         public ICollection<Practice> GetPractices()
         {
             return _ctx.Practices
-                .Include(p=>p.PracticeDiaries)
+                .Include(p => p.PracticeDiaries)
+                    .ThenInclude(pd => pd.Diary)
+                        .ThenInclude(d=>d.User)
+                            .ThenInclude(u=>u.Role)
+                .Include(p => p.PracticeDiaries)
+                    .ThenInclude(pd => pd.Diary)
+                        .ThenInclude(d => d.DiaryDays)
                 .Include(p=>p.Organization)
                 .ToList();
         }
@@ -29,6 +35,9 @@ namespace InternDiary.Service
         {
             return _ctx.Practices
                 .Include(p => p.PracticeDiaries)
+                    .ThenInclude(pd => pd.Diary)
+                        .ThenInclude(d => d.User)
+                            .ThenInclude(u => u.Role)
                 .Include(p => p.Organization)
                 .SingleOrDefault(p=>p.Id==Id);
         }

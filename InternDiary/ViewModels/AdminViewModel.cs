@@ -15,6 +15,7 @@ namespace InternDiary.ViewModels
         public AdminViewModel(ApplicationDbContext ctx, User user, UserService userService)
         {
             OrganizationService = new OrganizationService(ctx);
+            PracticeService = new PracticeService(ctx);
 
             UpdateLists();
         }
@@ -86,9 +87,27 @@ namespace InternDiary.ViewModels
 
         #endregion
 
+        #region Practice
+
+        #region services
+        public PracticeService PracticeService { get; set; }
+        #endregion
+
+        #region Lists
+        private List<Practice> _practices;
+        public List<Practice> Practices 
+        { 
+            get => _practices;
+            set => Set(ref _practices, value, nameof(Practices)); 
+        }
+        #endregion 
+
+        #endregion
+
         public void UpdateLists()
         {
             Organizations = new List<Organization>(OrganizationService.GetOrganizations());
+            Practices = new List<Practice>(PracticeService.GetPractices());
         }
     }
 }

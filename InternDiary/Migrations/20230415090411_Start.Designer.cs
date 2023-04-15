@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InternDiary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230414222351_Start2")]
-    partial class Start2
+    [Migration("20230415090411_Start")]
+    partial class Start
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -214,7 +214,7 @@ namespace InternDiary.Migrations
                         .IsRequired();
 
                     b.HasOne("InternDiary.Entities.Diary", "Diary")
-                        .WithMany()
+                        .WithMany("DiaryDays")
                         .HasForeignKey("DiaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -272,6 +272,8 @@ namespace InternDiary.Migrations
 
             modelBuilder.Entity("InternDiary.Entities.Diary", b =>
                 {
+                    b.Navigation("DiaryDays");
+
                     b.Navigation("PracticeDiaries");
                 });
 
