@@ -45,5 +45,15 @@ namespace InternDiary.Views.Pages
         {
             _viewModel.DeleteOrganization();
         }
+
+        private void AddPracticeButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddPractice();
+        }
+
+        private void OrganiztionListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.OpenManagerWindow();
+        }
     }
 }

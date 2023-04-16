@@ -18,11 +18,19 @@ namespace InternDiary.Service
         }
         public ICollection<User> GetUsers()
         {
-            return _ctx.Users.Include(u=>u.Role).Include(u=>u.Diaries).ToList();
+            return _ctx.Users.Include(u=>u.Role)
+                .Include(u => u.Diaries)
+                .Include(u => u.OrganizationUsers)
+                    .ThenInclude(ou => ou.Organization)
+                .ToList();
         }
         public User? GetUser(int Id)
         {
-            return _ctx.Users.Include(u => u.Role).Include(u => u.Diaries).SingleOrDefault(u=>u.Id==Id);
+            return _ctx.Users.Include(u => u.Role)
+                .Include(u => u.Diaries)
+                .Include(u=>u.OrganizationUsers)
+                    .ThenInclude(ou=>ou.Organization)
+                .SingleOrDefault(u=>u.Id==Id);
         }
         public void Insert(User user)
         {

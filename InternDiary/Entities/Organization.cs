@@ -11,6 +11,7 @@ namespace InternDiary.Entities
         public Organization()
         {
             Practices = new HashSet<Practice>();
+            OrganizationUsers = new HashSet<OrganizationUser>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace InternDiary.Entities
         public string Title { get; set; } = null!;
 
         public ICollection<Practice> Practices { get; set; }
+        public ICollection<OrganizationUser> OrganizationUsers { get; set; }
     }
 }

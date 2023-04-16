@@ -8,6 +8,7 @@ namespace InternDiary.Entities
 {
     public class DiaryDay
     {
+        public int Id { get; set; }
         public int DiaryId { get; set; }
         public int DayId { get; set; }
 

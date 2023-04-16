@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InternDiary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230415090411_Start")]
-    partial class Start
+    [Migration("20230416181507_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,15 +70,23 @@ namespace InternDiary.Migrations
 
             modelBuilder.Entity("InternDiary.Entities.DiaryDay", b =>
                 {
-                    b.Property<int>("DiaryId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DayId")
                         .HasColumnType("int");
 
-                    b.HasKey("DiaryId", "DayId");
+                    b.Property<int>("DiaryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("DayId");
+
+                    b.HasIndex("DiaryId");
 
                     b.ToTable("DiaryDays");
                 });
@@ -98,6 +106,29 @@ namespace InternDiary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Organizations");
+                });
+
+            modelBuilder.Entity("InternDiary.Entities.OrganizationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrganizationUsers");
                 });
 
             modelBuilder.Entity("InternDiary.Entities.Practice", b =>
@@ -126,15 +157,23 @@ namespace InternDiary.Migrations
 
             modelBuilder.Entity("InternDiary.Entities.PracticeDiary", b =>
                 {
-                    b.Property<int>("PracticeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DiaryId")
                         .HasColumnType("int");
 
-                    b.HasKey("PracticeId", "DiaryId");
+                    b.Property<int>("PracticeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("DiaryId");
+
+                    b.HasIndex("PracticeId");
 
                     b.ToTable("PracticeDiaries");
                 });
@@ -224,6 +263,25 @@ namespace InternDiary.Migrations
                     b.Navigation("Diary");
                 });
 
+            modelBuilder.Entity("InternDiary.Entities.OrganizationUser", b =>
+                {
+                    b.HasOne("InternDiary.Entities.Organization", "Organization")
+                        .WithMany("OrganizationUsers")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InternDiary.Entities.User", "User")
+                        .WithMany("OrganizationUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("InternDiary.Entities.Practice", b =>
                 {
                     b.HasOne("InternDiary.Entities.Organization", "Organization")
@@ -279,6 +337,8 @@ namespace InternDiary.Migrations
 
             modelBuilder.Entity("InternDiary.Entities.Organization", b =>
                 {
+                    b.Navigation("OrganizationUsers");
+
                     b.Navigation("Practices");
                 });
 
@@ -295,6 +355,8 @@ namespace InternDiary.Migrations
             modelBuilder.Entity("InternDiary.Entities.User", b =>
                 {
                     b.Navigation("Diaries");
+
+                    b.Navigation("OrganizationUsers");
                 });
 #pragma warning restore 612, 618
         }

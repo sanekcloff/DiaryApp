@@ -28,17 +28,22 @@ namespace InternDiary.Data
         public DbSet<PracticeDiary> PracticeDiaries { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<OrganizationUser> OrganizationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DiaryDay>(entity =>
-            {
-                entity.HasKey(e => new { e.DiaryId, e.DayId });
-            });
-            modelBuilder.Entity<PracticeDiary>(entity =>
-            {
-                entity.HasKey(e => new { e.PracticeId, e.DiaryId });
-            });
+            //modelBuilder.Entity<DiaryDay>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.DiaryId, e.DayId });
+            //});
+            //modelBuilder.Entity<PracticeDiary>(entity =>
+            //{
+            //    entity.HasKey(e => new { e.PracticeId, e.DiaryId });
+            //});
+            //modelBuilder.Entity<OrganizationUser>(entity=>
+            //{
+            //    entity.HasKey(e => new { e.OrganizationId, e.UserId });
+            //});
             base.OnModelCreating(modelBuilder);
         }
     }

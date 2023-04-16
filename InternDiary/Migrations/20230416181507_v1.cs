@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InternDiary.Migrations
 {
     /// <inheritdoc />
-    public partial class Start : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,15 +118,43 @@ namespace InternDiary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrganizationUsers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrganizationId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrganizationUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrganizationUsers_Organizations_OrganizationId",
+                        column: x => x.OrganizationId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrganizationUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DiaryDays",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DiaryId = table.Column<int>(type: "int", nullable: false),
                     DayId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiaryDays", x => new { x.DiaryId, x.DayId });
+                    table.PrimaryKey("PK_DiaryDays", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DiaryDays_Days_DayId",
                         column: x => x.DayId,
@@ -145,12 +173,14 @@ namespace InternDiary.Migrations
                 name: "PracticeDiaries",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     PracticeId = table.Column<int>(type: "int", nullable: false),
                     DiaryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PracticeDiaries", x => new { x.PracticeId, x.DiaryId });
+                    table.PrimaryKey("PK_PracticeDiaries", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PracticeDiaries_Diaries_DiaryId",
                         column: x => x.DiaryId,
@@ -176,9 +206,29 @@ namespace InternDiary.Migrations
                 column: "DayId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DiaryDays_DiaryId",
+                table: "DiaryDays",
+                column: "DiaryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizationUsers_OrganizationId",
+                table: "OrganizationUsers",
+                column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizationUsers_UserId",
+                table: "OrganizationUsers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PracticeDiaries_DiaryId",
                 table: "PracticeDiaries",
                 column: "DiaryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PracticeDiaries_PracticeId",
+                table: "PracticeDiaries",
+                column: "PracticeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Practices_OrganizationId",
@@ -196,6 +246,9 @@ namespace InternDiary.Migrations
         {
             migrationBuilder.DropTable(
                 name: "DiaryDays");
+
+            migrationBuilder.DropTable(
+                name: "OrganizationUsers");
 
             migrationBuilder.DropTable(
                 name: "PracticeDiaries");

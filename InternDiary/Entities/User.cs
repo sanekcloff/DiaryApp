@@ -12,6 +12,7 @@ namespace InternDiary.Entities
         public User()
         {
             Diaries = new HashSet<Diary>();
+            OrganizationUsers = new HashSet<OrganizationUser>();
         }
 
         public int Id { get; set; }
@@ -27,6 +28,7 @@ namespace InternDiary.Entities
         public Role Role { get; set; } = null!;
 
         public ICollection<Diary> Diaries { get; set; }
+        public ICollection<OrganizationUser> OrganizationUsers { get; set; }
 
         [NotMapped]
         public string FullName { get => $"{LastName} {FirstName} {MiddleName}"; }

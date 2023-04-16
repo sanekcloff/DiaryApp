@@ -20,11 +20,19 @@ namespace InternDiary.Service
 
         public ICollection<Organization> GetOrganizations()
         {
-            return _ctx.Organizations.Include(o => o.Practices).ToList();
+            return _ctx.Organizations.Include(o => o.Practices)
+                .Include(o => o.OrganizationUsers)
+                    .ThenInclude(ou => ou.User)
+                        .ThenInclude(u => u.Role)
+                .ToList();
         }
         public Organization? GetOrganization(int Id)
         {
-            return _ctx.Organizations.Include(o => o.Practices).SingleOrDefault(o => o.Id == Id);
+            return _ctx.Organizations.Include(o => o.Practices)
+                .Include(o=>o.OrganizationUsers)
+                    .ThenInclude(ou=>ou.User)
+                        .ThenInclude(u=>u.Role)
+                .SingleOrDefault(o => o.Id == Id);
         }
         public void Insert(Organization organization)
         {

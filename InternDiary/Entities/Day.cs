@@ -33,9 +33,9 @@ namespace InternDiary.Entities
                 if (IsAttend != null)
                 {
                     if ((bool)IsAttend)
-                        result = "Присутсвовал";
+                        result = "Присутствовал";
                     else
-                        result = "Отсутсвовал";
+                        result = "Отсутствовал";
                 }
                 return result;
             }

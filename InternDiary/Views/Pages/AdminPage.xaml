@@ -17,19 +17,34 @@
                         <ColumnDefinition Width="0.6*"/>
                     </Grid.ColumnDefinitions>
                     <ListView Grid.Column="0"
-                              ItemsSource="{Binding Organizations}"
+                              ItemsSource="{Binding Organizations,UpdateSourceTrigger=PropertyChanged}"
                               HorizontalContentAlignment="Stretch"
-                              SelectedItem="{Binding SelectedOrganization}">
+                              SelectedItem="{Binding SelectedOrganization, UpdateSourceTrigger=PropertyChanged}"
+                              MouseDoubleClick="OrganiztionListView_MouseDoubleClick"
+                              x:Name="OrganiztionListView">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListViewItem">
-                                            <Border BorderBrush="Red"
-                                                    CornerRadius="6">
+                                            <StackPanel>
                                                 <TextBlock Text="{Binding Title}"
                                                            x:Name="TextBlock1"/>
-                                            </Border>
+                                                <ListView ItemsSource="{Binding OrganizationUsers}">
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="ListViewItem">
+                                                                        <TextBlock Text="{Binding User.FullName}"
+                                                                                   x:Name="TextBlock1"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                            </StackPanel>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
@@ -41,9 +56,7 @@
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
-                    <StackPanel HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Grid.Column="1">
+                    <StackPanel Grid.Column="1">
                         <TextBlock Text="Название организации"/>
                         <TextBox Text="{Binding OrganizationTitle,UpdateSourceTrigger=PropertyChanged}"/>
                         <Button Content="Добавить"
@@ -89,40 +102,41 @@
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="ListViewItem">
                                                                         <StackPanel>
-                                                                            <TextBlock Text="{Binding Diary.DiaryInfo}"
-                                                                                   x:Name="TextBlock1"/>
-                                                                            <ListView ItemsSource="{Binding Diary.DiaryDays}">
-                                                                                <ListView.ItemContainerStyle>
-                                                                                    <Style TargetType="ListViewItem">
-                                                                                        <Setter Property="Template">
-                                                                                            <Setter.Value>
-                                                                                                <ControlTemplate TargetType="ListViewItem">
-                                                                                                    <Border BorderThickness="1"
+                                                                            <Expander Header="{Binding Diary.DiaryInfo}"
+                                                                                      x:Name="Expander1">
+                                                                                <ListView ItemsSource="{Binding Diary.DiaryDays}">
+                                                                                    <ListView.ItemContainerStyle>
+                                                                                        <Style TargetType="ListViewItem">
+                                                                                            <Setter Property="Template">
+                                                                                                <Setter.Value>
+                                                                                                    <ControlTemplate TargetType="ListViewItem">
+                                                                                                        <Border BorderThickness="1"
                                                                                                             BorderBrush="Orange"
                                                                                                             x:Name="Border1"
                                                                                                             Margin="5">
-                                                                                                        <StackPanel>
-                                                                                                            <TextBlock Text="{Binding Day.Date,StringFormat={}{0:d}}"/>
-                                                                                                            <TextBlock Text="{Binding Day.Content}"/>
-                                                                                                            <TextBlock Text="{Binding Day.Result}"/>
-                                                                                                            <TextBlock Text="{Binding Day.Attend}"/>
-                                                                                                        </StackPanel>
-                                                                                                    </Border>
-                                                                                                    <ControlTemplate.Triggers>
-                                                                                                        <Trigger Property="IsSelected" Value="True">
-                                                                                                            <Setter TargetName="Border1" Property="BorderBrush" Value="Red"/>
-                                                                                                        </Trigger>
-                                                                                                    </ControlTemplate.Triggers>
-                                                                                                </ControlTemplate>
-                                                                                            </Setter.Value>
-                                                                                        </Setter>
-                                                                                    </Style>
-                                                                                </ListView.ItemContainerStyle>
-                                                                            </ListView>
+                                                                                                            <StackPanel>
+                                                                                                                <TextBlock Text="{Binding Day.Date,ConverterCulture=ru-RU,StringFormat={}{0:d}}"/>
+                                                                                                                <TextBlock Text="{Binding Day.Content}"/>
+                                                                                                                <TextBlock Text="{Binding Day.Result}"/>
+                                                                                                                <TextBlock Text="{Binding Day.Attend}"/>
+                                                                                                            </StackPanel>
+                                                                                                        </Border>
+                                                                                                        <ControlTemplate.Triggers>
+                                                                                                            <Trigger Property="IsSelected" Value="True">
+                                                                                                                <Setter TargetName="Border1" Property="BorderBrush" Value="Red"/>
+                                                                                                            </Trigger>
+                                                                                                        </ControlTemplate.Triggers>
+                                                                                                    </ControlTemplate>
+                                                                                                </Setter.Value>
+                                                                                            </Setter>
+                                                                                        </Style>
+                                                                                    </ListView.ItemContainerStyle>
+                                                                                </ListView>
+                                                                            </Expander>
                                                                         </StackPanel>
                                                                         <ControlTemplate.Triggers>
                                                                             <Trigger Property="IsSelected" Value="True">
-                                                                                <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                                                                <Setter TargetName="Expander1" Property="FontWeight" Value="Bold"/>
                                                                             </Trigger>
                                                                         </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
@@ -143,6 +157,34 @@
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
+                    <StackPanel Grid.Column="1">
+                        <Expander Header="Практика">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Начало практики"/>
+                                <DatePicker SelectedDate="{Binding StartDate}"/>
+                                <TextBlock Text="Конец практики"/>
+                                <DatePicker SelectedDate="{Binding EndDate}"/>
+                                <TextBlock Text="Организация"/>
+                                <ComboBox SelectedItem="{Binding SelectedOrganization}"
+                                          ItemsSource="{Binding Organizations}"
+                                          DisplayMemberPath="Title"/>
+                                <Button Content="Добавить"
+                                        x:Name="AddPracticeButton"
+                                        Click="AddPracticeButton_Click"/>
+                            </StackPanel>
+                        </Expander>
+                        <Expander Header="Дневник">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Практика"/>
+                                <ComboBox ItemsSource="{Binding Practices}"
+                                          SelectedItem="{Binding SelectedPractice}"
+                                          DisplayMemberPath="PracticeInfo"/>
+                                <TextBlock Text="Практикант"/>
+                                <ComboBox />
+                                <Button Content="Добавить"/>
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>

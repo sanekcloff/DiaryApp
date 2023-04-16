@@ -27,5 +27,6 @@ namespace InternDiary.Entities
 
         [NotMapped]
         public string Dates { get => $"{StartDate.ToString("d")} - {EndDate.ToString("d")}"; }
+        public string PracticeInfo { get => $"{Organization.Title}: {Dates}"; }
     }
 }
