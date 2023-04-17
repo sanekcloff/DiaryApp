@@ -28,5 +28,12 @@ namespace InternDiary.Views.Windows
             InitializeComponent();
             ManagerFrame.Navigate(new OrganizationPage(organization, organizationUserService, userService));
         }
+
+        //для пракики
+        public ManagerWindow(Practice practice, PracticeService practiceService)
+        {
+            InitializeComponent();
+            ManagerFrame.Navigate(new PracticePage(practice, practiceService));
+        }
     }
 }

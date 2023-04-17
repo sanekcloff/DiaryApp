@@ -61,7 +61,13 @@ namespace InternDiary.ViewModels
         public Organization SelectedOrganization
         {
             get => _selectedOrganization;
-            set => Set(ref _selectedOrganization, value, nameof(SelectedOrganization));
+            set
+            {
+                if(Set(ref _selectedOrganization, value, nameof(SelectedOrganization)))
+                {
+                    OrganizationTitle = value.Title;
+                }
+            }
         }
         #endregion
 
@@ -69,19 +75,24 @@ namespace InternDiary.ViewModels
         #region Methods
         public void AddOrganization()
         {
-            // проверка на то существует ли организаия с таким названием уже в базе
-            if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle)) // Any вернёт значение true если найдёт хотябы 1 тако элемент, в начале стоит ! это отрицание.
+            if (!string.IsNullOrEmpty(OrganizationTitle))
             {
-                OrganizationService.Insert(new Organization { Title = OrganizationTitle });
+                // проверка на то существует ли организаия с таким названием уже в базе
+                if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle)) // Any вернёт значение true если найдёт хотябы 1 тако элемент, в начале стоит ! это отрицание.
+                {
+                    OrganizationService.Insert(new Organization { Title = OrganizationTitle });
+                }
+                else
+                    MessageBox.Show("Такая организация уже существует!");
             }
             else
-                MessageBox.Show("Такая организация уже существует!");
+                MessageBox.Show("Заполните поля!");
             UpdateLists();
         }
         public void UpdateOrganization()
         {
             // проверка на пустую строку
-            if (OrganizationTitle!=null || OrganizationTitle!=string.Empty)
+            if (!string.IsNullOrEmpty(OrganizationTitle))
             {
                 // опять поиск на одинаковое название как выше
                 if (!OrganizationService.GetOrganizations().Any(o => o.Title == OrganizationTitle))
@@ -132,14 +143,105 @@ namespace InternDiary.ViewModels
 
         #region Fields & Properties
         private User _selectedUser;
-        public User SelectedUser 
-        { 
+        private Role _selectedRole;
+        private string _lastName;
+        private string _firstName;
+        private string _middleName;
+        private string _login;
+        private string _password;
+
+        public User SelectedUser
+        {
             get => _selectedUser;
-            set => Set(ref _selectedUser, value, nameof(SelectedUser));
+            set
+            {
+                if (Set(ref _selectedUser, value, nameof(SelectedUser)))
+                {
+                    LastName = value.LastName;
+                    FirstName = value.FirstName;
+                    MiddleName = value.MiddleName;
+                    Password = value.Password;
+                    Login= value.Login;
+                    SelectedRole=value.Role;
+                }
+            }
+        }
+        public Role SelectedRole 
+        { 
+            get => _selectedRole; 
+            set => Set(ref _selectedRole, value, nameof(SelectedRole)); 
+        }
+        public string LastName 
+        { 
+            get => _lastName;
+            set => Set(ref _lastName, value, nameof(LastName));
+        }
+        public string FirstName 
+        { 
+            get => _firstName; 
+            set => Set(ref _firstName, value, nameof(FirstName)); 
+        }
+        public string MiddleName 
+        { 
+            get => _middleName; 
+            set => Set(ref _middleName, value, nameof(MiddleName)); 
+        }
+        public string Login 
+        { 
+            get => _login; 
+            set => Set(ref _login, value, nameof(Login)); 
+        }
+        public string Password 
+        { 
+            get => _password; 
+            set => Set(ref _password, value, nameof(Password)); 
         }
         #endregion
 
         #region Methods
+        public void AddUser()
+        {
+            if (!string.IsNullOrEmpty(Login) || !string.IsNullOrEmpty(Password) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(MiddleName) || SelectedRole != null)
+            {
+                if (!UserService.GetUsers().Any(u => u.Login == Login && u.Password == Password))
+                {
+                    UserService.Insert(new User { LastName = LastName, FirstName = FirstName, MiddleName = MiddleName, Password = Password, Login = Login, Role = SelectedRole });
+                }
+                else
+                    MessageBox.Show("Такой пользователь уже существует!");
+            }
+            else
+                MessageBox.Show("Заполните поля!");
+            UpdateLists();
+        }
+        public void UpdateUser()
+        {
+            if (SelectedUser!=null || !string.IsNullOrEmpty(Login) || !string.IsNullOrEmpty(Password) || !string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName) || !string.IsNullOrEmpty(MiddleName) || SelectedRole!=null)
+            {
+                if (!UserService.GetUsers().Any(u => u.Login == Login && u.Password == Password))
+                {
+                    SelectedUser.LastName = LastName;
+                    SelectedUser.FirstName = FirstName;
+                    SelectedUser.MiddleName = MiddleName;
+                    SelectedUser.Password = Password;
+                    SelectedUser.Login = Login;
+                    SelectedUser.Role = SelectedRole;
+                    UserService.Update(SelectedUser);
+                }
+                else
+                    MessageBox.Show("Такой логин и пароль уже используются");
+            }
+            else
+                MessageBox.Show("Заполните поля!");
+            UpdateLists();
+        }
+        public void DeleteUser()
+        {
+            var result = MessageBox.Show($"Уверены что хотите удалить {SelectedUser.FullName}?", "ВНИМАНИЕ", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+                UserService.Delete(SelectedUser);
+            UpdateLists();
+        }
         #endregion
 
         #endregion
@@ -211,9 +313,12 @@ namespace InternDiary.ViewModels
             Roles = new List<Role>(RoleService.GetRoles());
         }
 
-        public void OpenManagerWindow()
+        public void OpenManagerWindow(object obj)
         {
-            new ManagerWindow(SelectedOrganization, OrganizationUserService, UserService).ShowDialog();
+            if (obj is Organization)
+                new ManagerWindow(obj as Organization, OrganizationUserService, UserService).ShowDialog();
+            else if (obj is Practice)
+                new ManagerWindow(obj as Practice, PracticeService).ShowDialog();
            
             UpdateLists();
         }

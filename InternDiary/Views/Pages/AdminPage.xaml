@@ -75,7 +75,66 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Пользователи">
-
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="0.6*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView ItemsSource="{Binding Users}"
+                              SelectedItem="{Binding SelectedUser}"
+                              Grid.Column="0">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <StackPanel Margin="0,0,0,5">
+                                                <TextBlock x:Name="TextBlock1"
+                                                           Text="{Binding FullName}"/>
+                                                <TextBlock Text="{Binding Role.Title}"/>
+                                                <TextBlock Text="{Binding Login, StringFormat=Логин: {0}}"/>
+                                                <TextBlock Text="{Binding Password, StringFormat=Пароль: {0}}"/>
+                                            </StackPanel>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Фамилия"/>
+                        <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Имя"/>
+                        <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Отчество"/>
+                        <TextBox Text="{Binding MiddleName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Логин"/>
+                        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Пароль"/>
+                        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Роль"/>
+                        <ComboBox ItemsSource="{Binding Roles}"
+                                  SelectedItem="{Binding SelectedRole}"
+                                  DisplayMemberPath="Title"/>
+                        <Button Margin="0,5"
+                                Content="Добавить"
+                                x:Name="AddUserButton"
+                                Click="AddUserButton_Click"/>
+                        <Button Margin="0,5"
+                                Content="Обновить"
+                                x:Name="UpdateUserButton"
+                                Click="UpdateUserButton_Click"/>
+                        <Button Margin="0,5"
+                                Content="Удалить"
+                                x:Name="DeleteUserButton"
+                                Click="DeleteUserButton_Click"/>
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Практики">
                 <Grid>
@@ -85,7 +144,10 @@
                     </Grid.ColumnDefinitions>
                     <ListView Grid.Column="0"
                               HorizontalContentAlignment="Stretch"
-                              ItemsSource="{Binding Practices}">
+                              ItemsSource="{Binding Practices}"
+                              SelectedItem="{Binding SelectedPractice}"
+                              MouseDoubleClick="PracticesListView_MouseDoubleClick"
+                              x:Name="PracticesListView">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Template">
@@ -158,32 +220,17 @@
                         </ListView.ItemContainerStyle>
                     </ListView>
                     <StackPanel Grid.Column="1">
-                        <Expander Header="Практика">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Начало практики"/>
-                                <DatePicker SelectedDate="{Binding StartDate}"/>
-                                <TextBlock Text="Конец практики"/>
-                                <DatePicker SelectedDate="{Binding EndDate}"/>
-                                <TextBlock Text="Организация"/>
-                                <ComboBox SelectedItem="{Binding SelectedOrganization}"
+                        <TextBlock Text="Начало практики"/>
+                        <DatePicker SelectedDate="{Binding StartDate}"/>
+                        <TextBlock Text="Конец практики"/>
+                        <DatePicker SelectedDate="{Binding EndDate}"/>
+                        <TextBlock Text="Организация"/>
+                        <ComboBox SelectedItem="{Binding SelectedOrganization}"
                                           ItemsSource="{Binding Organizations}"
                                           DisplayMemberPath="Title"/>
-                                <Button Content="Добавить"
+                        <Button Content="Добавить"
                                         x:Name="AddPracticeButton"
                                         Click="AddPracticeButton_Click"/>
-                            </StackPanel>
-                        </Expander>
-                        <Expander Header="Дневник">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="Практика"/>
-                                <ComboBox ItemsSource="{Binding Practices}"
-                                          SelectedItem="{Binding SelectedPractice}"
-                                          DisplayMemberPath="PracticeInfo"/>
-                                <TextBlock Text="Практикант"/>
-                                <ComboBox />
-                                <Button Content="Добавить"/>
-                            </StackPanel>
-                        </Expander>
                     </StackPanel>
                 </Grid>
             </TabItem>

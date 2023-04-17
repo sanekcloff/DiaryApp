@@ -53,7 +53,27 @@ namespace InternDiary.Views.Pages
 
         private void OrganiztionListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _viewModel.OpenManagerWindow();
+            _viewModel.OpenManagerWindow(_viewModel.SelectedOrganization);
+        }
+
+        private void AddUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddUser();
+        }
+
+        private void UpdateUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.UpdateUser();
+        }
+
+        private void DeleteUserButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.DeleteUser();
+        }
+
+        private void PracticesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.OpenManagerWindow(_viewModel.SelectedPractice);
         }
     }
 }
