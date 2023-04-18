@@ -1,6 +1,5 @@
 ﻿using InternDiaryV2.Data;
 using InternDiaryV2.Entities;
-using InternDiaryV2.Services;
 using InternDiaryV2.ViewModels.Pages;
 using System;
 using System.Collections.Generic;
@@ -20,15 +19,15 @@ using System.Windows.Shapes;
 namespace InternDiaryV2.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для UserPage.xaml
+    /// Логика взаимодействия для DiaryPage.xaml
     /// </summary>
-    public partial class UserPage : Page
+    public partial class DiaryPage : Page
     {
-        private UserViewModel _viewModel;
-        public UserPage(User user, ApplicationDbContext ctx, UserService userService)
+        private DiaryViewModel _viewModel;
+        public DiaryPage(Diary diary, ApplicationDbContext ctx)
         {
             InitializeComponent();
-            DataContext = _viewModel = new UserViewModel(user, ctx, userService);
+            DataContext = _viewModel = new DiaryViewModel(diary, ctx);
         }
 
         private void UpdateDayButton_Click(object sender, RoutedEventArgs e)

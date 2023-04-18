@@ -7,17 +7,24 @@
         xmlns:vm="clr-namespace:InternDiaryV2.ViewModels.Windows"
         mc:Ignorable="d"
         Title="AuthorizationWindow" Height="450" Width="400"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Window.DataContext>
         <vm:AuthorizationViewModel/>
     </Window.DataContext>
     <StackPanel VerticalAlignment="Center">
-        <TextBlock Text="Логин"/>
-        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Text="Пароль"/>
-        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="Логин"
+                   HorizontalAlignment="Center"/>
+        <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"
+                 Width="250"/>
+        <TextBlock Text="Пароль"
+                   HorizontalAlignment="Center"/>
+        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                 Width="250"/>
         <Button x:Name="AuthoriztionButton"
                 Content="Авторизоваться"
-                Click="AuthoriztionButton_Click"/>
+                Click="AuthoriztionButton_Click"
+                Width="250"
+                Margin="10"/>
     </StackPanel>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using InternDiaryV2.Data;
+using InternDiaryV2.Entities;
 using InternDiaryV2.Services;
 using InternDiaryV2.Views.Windows;
 using System;
@@ -16,6 +17,16 @@ namespace InternDiaryV2.ViewModels.Windows
         {
             _ctx = new ApplicationDbContext();
 
+            if (!_ctx.Users.Any(u => u.Login == "admin" && u.Password == "admin"))
+            {
+                if (_ctx.Roles.Count()==0)
+                {
+                    _ctx.Roles.AddRange(new Role { Title="Администратор"}, new Role { Title = "Практикант"});
+                    _ctx.SaveChanges();
+                }
+                _ctx.Users.Add(new User { FirstName = "Александр", LastName = "Аксёнов", MiddleName = "Игоревич", RoleId = 1, Login="admin", Password="admin"});
+                _ctx.SaveChanges();
+            }
             UserService = new UserService(_ctx);
             CuratorService = new CuratorService(_ctx);
         }

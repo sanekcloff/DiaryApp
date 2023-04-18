@@ -29,5 +29,11 @@ namespace InternDiaryV2.Views.Windows
             Title = "Добавление дневников";
             ManagerFrame.Navigate(new PracticePage(practice, ctx, userService));
         }
+        public ManagerWindow(Diary diary, ApplicationDbContext ctx)
+        {
+            InitializeComponent();
+            Title = "Работа с дневником";
+            ManagerFrame.Navigate(new DiaryPage(diary, ctx));
+        }
     }
 }

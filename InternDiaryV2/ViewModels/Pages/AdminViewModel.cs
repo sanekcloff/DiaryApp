@@ -27,8 +27,6 @@ namespace InternDiaryV2.ViewModels.Pages
             UpdateLists();
 
             SelectedRole = Roles[0];
-            CselectedOrganization = Organizations[0];
-            PselectedCurator = Curators[0];
             StartDate = DateTime.Now;
             EndDate = DateTime.Now.AddDays(1);
         }

@@ -7,8 +7,43 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CuratorPage">
-
     <Grid>
-        <TextBlock Text="Curator"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="Дневники"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="30"/>
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding PracticeDiaries}"
+                  SelectedItem="{Binding SelectedPracticeDiary}"
+                  x:Name="PracticeDiariesListView"
+                  MouseDoubleClick="PracticeDiariesListView_MouseDoubleClick">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Border>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Diary.User.FullName}"
+                                                   x:Name="TextBlock1"
+                                                   FontSize="24"/>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </Page>

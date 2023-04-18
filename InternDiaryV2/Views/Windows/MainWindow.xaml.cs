@@ -35,7 +35,7 @@ namespace InternDiaryV2.Views.Windows
                 }
                 else
                 {
-                    MainFrame.Navigate(new UserPage(obj as User, ctx, userService, curatorService));
+                    MainFrame.Navigate(new UserPage(obj as User, ctx, userService));
                     Title = "Окно Практиканта";
                 } 
             }

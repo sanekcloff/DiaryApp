@@ -1,6 +1,7 @@
 ﻿using InternDiaryV2.Data;
 using InternDiaryV2.Entities;
 using InternDiaryV2.Services;
+using InternDiaryV2.ViewModels.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,16 @@ namespace InternDiaryV2.Views.Pages
     /// </summary>
     public partial class CuratorPage : Page
     {
+        private CuratorViewModel _viewModel;
         public CuratorPage(Curator curator, ApplicationDbContext ctx, UserService userService, CuratorService curatorService)
         {
             InitializeComponent();
+            DataContext = _viewModel = new CuratorViewModel(curator, ctx, userService, curatorService);
+        }
+
+        private void PracticeDiariesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.OpenManagerWindow();
         }
     }
 }
