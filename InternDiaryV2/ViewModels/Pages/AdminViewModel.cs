@@ -165,8 +165,13 @@ namespace InternDiaryV2.ViewModels.Pages
             {
                 if (!(UserService.GetUsers().Any(u => u.FirstName == FirstName && u.LastName == LastName && u.MiddleName == MiddleName && u.Role == SelectedRole && u.Login == Login && u.Password == Password)))
                 {
-                    UserService.Insert(new User { FirstName = FirstName, LastName = LastName, MiddleName = MiddleName, Role = SelectedRole, Login = Login, Password = Password });
-                    UpdateLists();
+                    if (!(UserService.GetUsers().Any(u => u.Login == Login || u.Password == Password)))
+                    {
+                        UserService.Insert(new User { FirstName = FirstName, LastName = LastName, MiddleName = MiddleName, Role = SelectedRole, Login = Login, Password = Password });
+                        UpdateLists();
+                    }
+                    else
+                        MessageBox.Show("Используйте другой логин и пароль!");
                 }
                 else
                     MessageBox.Show("Такой пользователь уже существует!");
@@ -180,14 +185,19 @@ namespace InternDiaryV2.ViewModels.Pages
             {
                 if (!(UserService.GetUsers().Any(u => u.FirstName == FirstName && u.LastName == LastName && u.MiddleName == MiddleName && u.Role == SelectedRole && u.Login == Login && u.Password == Password)))
                 {
-                    SelectedUser.LastName = LastName;
-                    SelectedUser.FirstName = FirstName;
-                    SelectedUser.MiddleName = MiddleName;
-                    SelectedUser.Login = Login;
-                    SelectedUser.Password = Password;
-                    SelectedUser.Role = SelectedRole;
-                    UserService.Update(SelectedUser);
-                    UpdateLists();
+                    if (!(UserService.GetUsers().Any(u=>u.Login==Login || u.Password==Password)))
+                    {
+                        SelectedUser.LastName = LastName;
+                        SelectedUser.FirstName = FirstName;
+                        SelectedUser.MiddleName = MiddleName;
+                        SelectedUser.Login = Login;
+                        SelectedUser.Password = Password;
+                        SelectedUser.Role = SelectedRole;
+                        UserService.Update(SelectedUser);
+                        UpdateLists();
+                    }
+                    else
+                        MessageBox.Show("Используйте другой логин и пароль!");
                 }   
                 else
                     MessageBox.Show("Такой пользователь уже существует!");
@@ -216,8 +226,13 @@ namespace InternDiaryV2.ViewModels.Pages
             {
                 if(!(CuratorService.GetCurators().Any(u => u.FirstName == CfirstName && u.LastName == ClastName && u.MiddleName == CmiddleName && u.Organization == CselectedOrganization && u.Login == Clogin && u.Password == Cpassword)))
                 {
-                    CuratorService.Insert(new Curator { FirstName = CfirstName, LastName = ClastName, MiddleName = CmiddleName, Organization = CselectedOrganization, Login = Clogin, Password = Cpassword });
-                    UpdateLists();
+                    if (!(CuratorService.GetCurators().Any(u=>u.Login == Clogin || u.Password == Cpassword)))
+                    {
+                        CuratorService.Insert(new Curator { FirstName = CfirstName, LastName = ClastName, MiddleName = CmiddleName, Organization = CselectedOrganization, Login = Clogin, Password = Cpassword });
+                        UpdateLists();
+                    }
+                    else
+                        MessageBox.Show("Используйте другой логин и пароль!");
                 }
                 else
                     MessageBox.Show("Такой руководитель уже существует!");
@@ -231,14 +246,19 @@ namespace InternDiaryV2.ViewModels.Pages
             {
                 if (!(CuratorService.GetCurators().Any(u => u.FirstName == CfirstName && u.LastName == ClastName && u.MiddleName == CmiddleName && u.Organization == CselectedOrganization && u.Login == Clogin && u.Password == Cpassword)))
                 {
-                    SelectedCurator.LastName = ClastName;
-                    SelectedCurator.FirstName = CfirstName;
-                    SelectedCurator.MiddleName = CmiddleName;
-                    SelectedCurator.Login = Clogin;
-                    SelectedCurator.Password = Cpassword;
-                    SelectedCurator.Organization = CselectedOrganization;
-                    CuratorService.Update(SelectedCurator);
-                    UpdateLists();
+                    if (!(CuratorService.GetCurators().Any(u => u.Login == Clogin || u.Password == Cpassword)))
+                    {
+                        SelectedCurator.LastName = ClastName;
+                        SelectedCurator.FirstName = CfirstName;
+                        SelectedCurator.MiddleName = CmiddleName;
+                        SelectedCurator.Login = Clogin;
+                        SelectedCurator.Password = Cpassword;
+                        SelectedCurator.Organization = CselectedOrganization;
+                        CuratorService.Update(SelectedCurator);
+                        UpdateLists();
+                    }
+                    else
+                        MessageBox.Show("Используйте другой логин и пароль!");
                 }
                 else
                     MessageBox.Show("Такой руководитель уже сущетсвует!");

@@ -14,26 +14,41 @@
         </Grid.ColumnDefinitions>
         <ListView Grid.Column="0"
                   ItemsSource="{Binding PracticeDiaries}"
-                  SelectedItem="{Binding SelectedPracticeDiary}">
+                  SelectedItem="{Binding SelectedPracticeDiary}"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  HorizontalAlignment="Stretch"
+                  HorizontalContentAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  VerticalAlignment="Stretch">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListViewItem">
-                                <Border Margin="5">
+                                <Border Margin="5"
+                                        BorderBrush="Black"
+                                        BorderThickness="1"
+                                        x:Name="Border">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Diary.DiaryInfo}"
                                                x:Name="TextBlock1"/>
-                                        <ListView ItemsSource="{Binding Diary.DiaryDays}">
+                                        <ListView ItemsSource="{Binding Diary.DiaryDays}"
+                                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                                  HorizontalContentAlignment="Stretch"
+                                                  HorizontalAlignment="Stretch"
+                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                  Height="200">
                                             <ListView.ItemContainerStyle>
                                                 <Style TargetType="ListViewItem">
                                                     <Setter Property="Template">
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListViewItem">
-                                                                <StackPanel>
+                                                                <StackPanel
+                                                                    Margin="3">
                                                                     <TextBlock Text="{Binding Day.Date,ConverterCulture=ru-RU,StringFormat={}{0:d}}"/>
                                                                     <TextBlock Text="{Binding Day.Content,StringFormat=Содержание работ: {0}}"
-                                                                               x:Name="TextBlock1"/>
+                                                                               x:Name="TextBlock1"
+                                                                               TextWrapping="Wrap"/>
                                                                     <TextBlock Text="{Binding Day.Result, StringFormat=Оценка: {0}}"
                                                                                x:Name="TextBlock2"/>
                                                                     <TextBlock Text="{Binding Day.Attend}"/>
@@ -56,7 +71,7 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                        <Setter TargetName="Border" Property="BorderThickness" Value="2"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -71,15 +86,16 @@
             <TextBlock Text="Практиканты"/>
             <ComboBox ItemsSource="{Binding Users}"
                       SelectedItem="{Binding SelectedUser}"
-                      DisplayMemberPath="FullName"/>
+                      DisplayMemberPath="FullName"
+                      Margin="0,0,0,10"/>
             <Button x:Name="AddDiaryButton"
                     Content="Добавить дневник"
                     Click="AddDiaryButton_Click"
-                    Margin="0,10"/>
+                    Margin="0,10,0,3"/>
             <Button x:Name="DeleteDiaryButton"
                     Content="Удалить дневник"
                     Click="DeleteDiaryButton_Click"
-                    Margin="0,10"/>
+                    Margin="0,3"/>
         </StackPanel>
     </Grid>
 </Page>

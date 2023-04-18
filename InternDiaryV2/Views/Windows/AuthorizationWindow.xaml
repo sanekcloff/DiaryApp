@@ -6,13 +6,18 @@
         xmlns:local="clr-namespace:InternDiaryV2.Views.Windows"
         xmlns:vm="clr-namespace:InternDiaryV2.ViewModels.Windows"
         mc:Ignorable="d"
-        Title="AuthorizationWindow" Height="450" Width="400"
+        Title="Авторизация" Height="450" Width="400"
+        Icon="\Resources\Icons\Icon.ico"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Window.DataContext>
         <vm:AuthorizationViewModel/>
     </Window.DataContext>
     <StackPanel VerticalAlignment="Center">
+        <Image Source="\Resources\Icons\Logo.png"
+               Height="100"
+               Stretch="Uniform"
+               Margin="20"/>
         <TextBlock Text="Логин"
                    HorizontalAlignment="Center"/>
         <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"

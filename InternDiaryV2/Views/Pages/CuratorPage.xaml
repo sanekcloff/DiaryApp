@@ -21,7 +21,9 @@
                   ItemsSource="{Binding PracticeDiaries}"
                   SelectedItem="{Binding SelectedPracticeDiary}"
                   x:Name="PracticeDiariesListView"
-                  MouseDoubleClick="PracticeDiariesListView_MouseDoubleClick">
+                  MouseDoubleClick="PracticeDiariesListView_MouseDoubleClick"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  VerticalAlignment="Stretch">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Template">

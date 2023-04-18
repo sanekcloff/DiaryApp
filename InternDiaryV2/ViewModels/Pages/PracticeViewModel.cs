@@ -73,7 +73,7 @@ namespace InternDiaryV2.ViewModels.Pages
                 {
                     var diary = new Diary { User = SelectedUser };
                     var days = new List<Day>();
-                    for (DateTime date = Practice.StartDate; date.Day <= Practice.EndDate.Day; date = date.AddDays(1))
+                    for (DateTime date = Practice.StartDate; date.Date <= Practice.EndDate.Date; date = date.AddDays(1))
                     {
                         if(date.DayOfWeek!=DayOfWeek.Sunday)
                             days.Add(new Day { Date = date });
