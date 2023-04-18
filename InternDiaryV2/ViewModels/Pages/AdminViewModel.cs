@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace InternDiaryV2.ViewModels.Pages
 {
@@ -162,79 +163,190 @@ namespace InternDiaryV2.ViewModels.Pages
         #region Methods
         public void AddUser()
         {
-            UserService.Insert(new User { FirstName=FirstName, LastName=LastName, MiddleName=MiddleName, Role=SelectedRole, Login=Login, Password=Password });
-            UpdateLists();
+            if (!(string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(MiddleName) || string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(Password) || SelectedRole == null))
+            {
+                if (!(UserService.GetUsers().Any(u => u.FirstName == FirstName && u.LastName == LastName && u.MiddleName == MiddleName && u.Role == SelectedRole && u.Login == Login && u.Password == Password)))
+                {
+                    UserService.Insert(new User { FirstName = FirstName, LastName = LastName, MiddleName = MiddleName, Role = SelectedRole, Login = Login, Password = Password });
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такой пользователь уже существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void UpdateUser()
         {
-            SelectedUser.LastName = LastName;
-            SelectedUser.FirstName = FirstName;
-            SelectedUser.MiddleName = MiddleName;
-            SelectedUser.Login = Login;
-            SelectedUser.Password = Password;
-            SelectedUser.Role = SelectedRole;
-            UserService.Update(SelectedUser);
-            UpdateLists();
+            if (!(string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName) || string.IsNullOrEmpty(MiddleName) || string.IsNullOrEmpty(Login) || string.IsNullOrEmpty(Password) || SelectedRole == null))
+            {
+                if (!(UserService.GetUsers().Any(u => u.FirstName == FirstName && u.LastName == LastName && u.MiddleName == MiddleName && u.Role == SelectedRole && u.Login == Login && u.Password == Password)))
+                {
+                    SelectedUser.LastName = LastName;
+                    SelectedUser.FirstName = FirstName;
+                    SelectedUser.MiddleName = MiddleName;
+                    SelectedUser.Login = Login;
+                    SelectedUser.Password = Password;
+                    SelectedUser.Role = SelectedRole;
+                    UserService.Update(SelectedUser);
+                    UpdateLists();
+                }   
+                else
+                    MessageBox.Show("Такой пользователь уже существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
+
         }
         public void DeleteUser()
         {
-            UserService.Delete(SelectedUser);
-            UpdateLists();
+            if (SelectedUser != null)
+            {
+                var result = MessageBox.Show("Вы уверены что хотите удалить?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    UserService.Delete(SelectedUser);
+                    UpdateLists();
+                }        
+            }
+            else
+                MessageBox.Show("Выберите пользователя");
         }
         public void AddCurator()
         {
-            CuratorService.Insert(new Curator { FirstName = CfirstName, LastName = ClastName, MiddleName = CmiddleName, Organization = CselectedOrganization, Login = Clogin, Password = Cpassword });
-            UpdateLists();
+            if (!(string.IsNullOrEmpty(CfirstName) || string.IsNullOrEmpty(ClastName) || string.IsNullOrEmpty(CmiddleName) || string.IsNullOrEmpty(Clogin) || string.IsNullOrEmpty(Cpassword) || CselectedOrganization == null))
+            {
+                if(!(CuratorService.GetCurators().Any(u => u.FirstName == CfirstName && u.LastName == ClastName && u.MiddleName == CmiddleName && u.Organization == CselectedOrganization && u.Login == Clogin && u.Password == Cpassword)))
+                {
+                    CuratorService.Insert(new Curator { FirstName = CfirstName, LastName = ClastName, MiddleName = CmiddleName, Organization = CselectedOrganization, Login = Clogin, Password = Cpassword });
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такой руководитель уже существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void UpdateCurator()
         {
-            SelectedCurator.LastName = ClastName;
-            SelectedCurator.FirstName = CfirstName;
-            SelectedCurator.MiddleName = CmiddleName;
-            SelectedCurator.Login = Clogin;
-            SelectedCurator.Password = Cpassword;
-            SelectedCurator.Organization = CselectedOrganization;
-            CuratorService.Update(SelectedCurator);
-            UpdateLists();
+            if (!(string.IsNullOrEmpty(CfirstName) || string.IsNullOrEmpty(ClastName) || string.IsNullOrEmpty(CmiddleName) || string.IsNullOrEmpty(Clogin) || string.IsNullOrEmpty(Cpassword) || CselectedOrganization == null))
+            {
+                if (!(CuratorService.GetCurators().Any(u => u.FirstName == CfirstName && u.LastName == ClastName && u.MiddleName == CmiddleName && u.Organization == CselectedOrganization && u.Login == Clogin && u.Password == Cpassword)))
+                {
+                    SelectedCurator.LastName = ClastName;
+                    SelectedCurator.FirstName = CfirstName;
+                    SelectedCurator.MiddleName = CmiddleName;
+                    SelectedCurator.Login = Clogin;
+                    SelectedCurator.Password = Cpassword;
+                    SelectedCurator.Organization = CselectedOrganization;
+                    CuratorService.Update(SelectedCurator);
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такой руководитель уже сущетсвует!");
+            }  
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void DeleteCurator()
         {
-            CuratorService.Delete(SelectedCurator);
-            UpdateLists();
+            var result = MessageBox.Show("Вы уверены что хотите удалить?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                CuratorService.Delete(SelectedCurator);
+                UpdateLists();
+            }
         }
         public void AddOrganization()
         {
-            OrganizationService.Insert(new Organization { Title=Title });
-            UpdateLists();
+            if (!string.IsNullOrEmpty(Title))
+            {
+                if(!OrganizationService.GetOrganizations().Any(o=>o.Title==Title))
+                {
+                    OrganizationService.Insert(new Organization { Title = Title });
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такая организация существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void UpdateOrganization()
         {
-            SelectedOrganization.Title = Title;
-            OrganizationService.Update(SelectedOrganization);
-            UpdateLists();
+            if (!string.IsNullOrEmpty(Title))
+            {
+                if (!OrganizationService.GetOrganizations().Any(o => o.Title == Title))
+                {
+                    SelectedOrganization.Title = Title;
+                    OrganizationService.Update(SelectedOrganization);
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такая организация существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void DeleteOrganization()
         {
-            OrganizationService.Delete(SelectedOrganization);
-            UpdateLists();
+            var result = MessageBox.Show("Вы уверены что хотите удалить?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                OrganizationService.Delete(SelectedOrganization);
+                UpdateLists();
+            }
         }
         public void AddPractice()
         {
-            PracticeService.Insert(new Practice { StartDate=StartDate, EndDate=EndDate, Curator=PselectedCurator });
-            UpdateLists();
+            if (PselectedCurator != null)
+            {
+                if (!PracticeService.GetPractices().Any(p=>p.StartDate==StartDate && p.EndDate==EndDate && p.Curator==PselectedCurator))
+                {
+                    PracticeService.Insert(new Practice { StartDate = StartDate, EndDate = EndDate, Curator = PselectedCurator });
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такая практика существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void UpdatePractice()
         {
-            SelectedPractice.StartDate = StartDate;
-            SelectedPractice.EndDate = EndDate;
-            SelectedPractice.Curator = PselectedCurator;
-            PracticeService.Update(SelectedPractice);
-            UpdateLists();
+            if (PselectedCurator != null)
+            {
+                if (!PracticeService.GetPractices().Any(p => p.StartDate == StartDate && p.EndDate == EndDate && p.Curator == PselectedCurator))
+                {
+                    SelectedPractice.StartDate = StartDate;
+                    SelectedPractice.EndDate = EndDate;
+                    SelectedPractice.Curator = PselectedCurator;
+                    PracticeService.Update(SelectedPractice);
+                    UpdateLists();
+                }
+                else
+                    MessageBox.Show("Такая практика существует!");
+            }
+            else
+                MessageBox.Show("Все поля должны быть заполнены!");
         }
         public void DeletePractice()
         {
-            PracticeService.Delete(SelectedPractice);
-            UpdateLists();
+            var result = MessageBox.Show("Вы уверены что хотите удалить?", "Внимание!", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                PracticeService.Delete(SelectedPractice);
+                DayService dayService = new(_ctx);
+                DiaryService diaryService = new(_ctx);
+
+                var diaries = new List<Diary>(SelectedPractice.PracticeDiaries.Select(pd => pd.Diary));
+                diaryService.Delete(diaries);
+                foreach (var diary in diaries)
+                {
+                    dayService.Delete(diary.DiaryDays.Select(dd=>dd.Day).ToList());
+                }
+                UpdateLists();
+            }
         }
         #endregion
 
@@ -242,6 +354,7 @@ namespace InternDiaryV2.ViewModels.Pages
         {
             if (SelectedPractice != null)
                 new ManagerWindow(SelectedPractice, _ctx, UserService).ShowDialog();
+            UpdateLists();
         }
         private void UpdateLists()
         {

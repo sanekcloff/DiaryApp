@@ -30,5 +30,15 @@ namespace InternDiaryV2.Views.Pages
             InitializeComponent();
             DataContext = _viewModel = new PracticeViewModel(practice, ctx, userService);
         }
+
+        private void AddDiaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.AddDiary();
+        }
+
+        private void DeleteDiaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.RemoveDiary();
+        }
     }
 }

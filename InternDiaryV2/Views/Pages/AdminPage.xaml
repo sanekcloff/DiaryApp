@@ -181,7 +181,9 @@
                 </Grid.ColumnDefinitions>
                 <ListView Grid.Column="0"
                           SelectedItem="{Binding SelectedPractice}"
-                          ItemsSource="{Binding Practices}">
+                          ItemsSource="{Binding Practices}"
+                          MouseDoubleClick="PracticesListView_MouseDoubleClick"
+                          x:Name="PracticesListView">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Template">

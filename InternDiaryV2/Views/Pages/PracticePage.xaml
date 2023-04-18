@@ -7,8 +7,76 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PracticePage">
-
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width=".7*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Grid.Column="0"
+                  ItemsSource="{Binding PracticeDiaries}"
+                  SelectedItem="{Binding SelectedPracticeDiary}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Border Margin="5">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Diary.DiaryInfo}"
+                                               x:Name="TextBlock1"/>
+                                        <ListView ItemsSource="{Binding Diary.DiaryDays}">
+                                            <ListView.ItemContainerStyle>
+                                                <Style TargetType="ListViewItem">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListViewItem">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Day.Date,ConverterCulture=ru-RU,StringFormat={}{0:d}}"/>
+                                                                    <TextBlock Text="{Binding Day.Content,StringFormat=Содержание работ: {0}}"
+                                                                               x:Name="TextBlock1"/>
+                                                                    <TextBlock Text="{Binding Day.Result, StringFormat=Оценка: {0}}"
+                                                                               x:Name="TextBlock2"/>
+                                                                    <TextBlock Text="{Binding Day.Attend}"/>
+                                                                </StackPanel>
+                                                                <ControlTemplate.Triggers>
+                                                                    <DataTrigger Binding="{Binding Day.ContentNullOrEmpty}" Value="true">
+                                                                        <Setter TargetName="TextBlock1" Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Day.ResultNullOrEmpty}" Value="true">
+                                                                        <Setter TargetName="TextBlock2" Property="Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+                                        </ListView>
+                                    </StackPanel>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="TextBlock1" Property="FontWeight" Value="Bold"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+        <StackPanel Grid.Column="1"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Практиканты"/>
+            <ComboBox ItemsSource="{Binding Users}"
+                      SelectedItem="{Binding SelectedUser}"
+                      DisplayMemberPath="FullName"/>
+            <Button x:Name="AddDiaryButton"
+                    Content="Добавить дневник"
+                    Click="AddDiaryButton_Click"/>
+            <Button x:Name="DeleteDiaryButton"
+                    Content="Удалить дневник"
+                    Click="DeleteDiaryButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

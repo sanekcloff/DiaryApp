@@ -32,16 +32,29 @@ namespace InternDiaryV2.Services
             _ctx.Days.Add(day);
             _ctx.SaveChanges();
         }
-
+        public void Insert(List<Day> days)
+        {
+            _ctx.Days.AddRange(days);
+            _ctx.SaveChanges();
+        }
         public void Update(Day day)
         {
             _ctx.Days.Update(day);
             _ctx.SaveChanges();
         }
-
+        public void Update(List<Day> days)
+        {
+            _ctx.Days.UpdateRange(days);
+            _ctx.SaveChanges();
+        }
         public void Delete(Day day) 
         {
             _ctx.Days.Remove(day);
+            _ctx.SaveChanges();
+        }
+        public void Delete(List<Day> days)
+        {
+            _ctx.Days.RemoveRange(days);
             _ctx.SaveChanges();
         }
     }

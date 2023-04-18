@@ -39,5 +39,17 @@ namespace InternDiaryV2.Entities
                 return result;
             }
         }
+        public bool ContentNullOrEmpty { get => string.IsNullOrEmpty(Content); }
+        public bool ResultNullOrEmpty 
+        { 
+            get
+            {
+                if (Result==null)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
     }
 }

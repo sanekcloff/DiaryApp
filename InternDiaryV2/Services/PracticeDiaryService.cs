@@ -43,5 +43,10 @@ namespace InternDiaryV2.Services
             _ctx.PracticeDiaries.Remove(practiceDiary);
             _ctx.SaveChanges();
         }
+        public void Delete(List<PracticeDiary> practiceDiaries)
+        {
+            _ctx.PracticeDiaries.RemoveRange(practiceDiaries);
+            _ctx.SaveChanges();
+        }
     }
 }

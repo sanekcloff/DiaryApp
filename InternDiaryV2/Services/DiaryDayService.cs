@@ -31,16 +31,29 @@ namespace InternDiaryV2.Services
             _ctx.DiaryDays.Add(diaryDay);
             _ctx.SaveChanges();
         }
-
+        public void Insert(List<DiaryDay> diaryDays)
+        {
+            _ctx.DiaryDays.AddRange(diaryDays);
+            _ctx.SaveChanges();
+        }
         public void Update(DiaryDay diaryDay)
         {
             _ctx.DiaryDays.Update(diaryDay);
             _ctx.SaveChanges();
         }
-
+        public void Update(List<DiaryDay> diaryDays)
+        {
+            _ctx.DiaryDays.UpdateRange(diaryDays);
+            _ctx.SaveChanges();
+        }
         public void Delete(DiaryDay diaryDay) 
         {
             _ctx.DiaryDays.Remove(diaryDay);
+            _ctx.SaveChanges();
+        }
+        public void Delete(List<DiaryDay> diaryDays)
+        {
+            _ctx.DiaryDays.RemoveRange(diaryDays);
             _ctx.SaveChanges();
         }
     }

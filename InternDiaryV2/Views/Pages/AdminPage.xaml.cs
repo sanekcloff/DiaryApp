@@ -90,5 +90,10 @@ namespace InternDiaryV2.Views.Pages
         {
             _viewModel.DeletePractice();
         }
+
+        private void PracticesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _viewModel.OpenManagerWindow();
+        }
     }
 }

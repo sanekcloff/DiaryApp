@@ -40,14 +40,29 @@ namespace InternDiaryV2.Services
             _ctx.Diaries.Add(diary);
             _ctx.SaveChanges();
         }
+        public void Insert(List<Diary> diaries)
+        {
+            _ctx.Diaries.AddRange(diaries);
+            _ctx.SaveChanges();
+        }
         public void Update(Diary diary)
         {
             _ctx.Diaries.Update(diary);
             _ctx.SaveChanges();
         }
+        public void Update(List<Diary> diaries)
+        {
+            _ctx.Diaries.UpdateRange(diaries);
+            _ctx.SaveChanges();
+        }
         public void Delete(Diary diary) 
         {
             _ctx.Diaries.Remove(diary);
+            _ctx.SaveChanges();
+        }
+        public void Delete(List<Diary> diaries)
+        {
+            _ctx.Diaries.RemoveRange(diaries);
             _ctx.SaveChanges();
         }
     }
